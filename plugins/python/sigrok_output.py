@@ -25,4 +25,9 @@ class Output(GstBase.BaseSink):
         print(self.output.receive(packet), end=None)
         return Gst.FlowReturn.OK
 
+    def do_stop(self):
+        end_packet = context.create_end_packet()
+        print(self.output.receive(end_packet))
+        return True
+
 __gstelementfactory__ = ("sigrok_output", Gst.Rank.NONE, Output)
