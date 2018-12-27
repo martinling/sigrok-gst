@@ -18,7 +18,9 @@ class Output(GstBase.BaseSink):
         self.output = fmt.create_output(device)
 
     def do_render(self, buf):
-        print("got buffer")
+        ret, map_info = buf.map(Gst.MapFlags.READ)
+        packet = context.create_logic_packet(map_info.data, 2)
+        print(self.output.receive(packet), end=None)
         return Gst.FlowReturn.OK
 
 __gstelementfactory__ = ("sigrok_output", Gst.Rank.NONE, Output)
