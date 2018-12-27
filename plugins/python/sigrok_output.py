@@ -15,6 +15,8 @@ class Output(GstBase.BaseSink):
         GstBase.BaseSink.__init__(self)
         fmt = context.output_formats[self.format]
         device = context.create_user_device("Vendor", "Model", "Version")
+        for i in range(8):
+            device.add_channel(i, ChannelType.LOGIC, "D%d" % i)
         self.output = fmt.create_output(device)
 
     def do_render(self, buf):
