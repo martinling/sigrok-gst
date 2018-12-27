@@ -28,7 +28,7 @@ class Device(Gst.Element):
 
     def datafeed_callback(self, device, packet):
         if packet.type == PacketType.LOGIC:
-            buf = Gst.Buffer.new_wrapped(packet.payload.data.copy())
+            buf = Gst.Buffer.new_wrapped(bytes(packet.payload.data))
             print("pushing buffer")
             self.src.push(buf)
             print("buffer pushed")
