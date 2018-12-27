@@ -45,6 +45,7 @@ class Device(Gst.Element):
         self.task = Gst.Task.new(self.run)
         self.mutex = GLib.RecMutex()
         self.task.set_lock(self.mutex)
+        self.src.set_active(True)
         self.task.start()
 
     def run(self):
