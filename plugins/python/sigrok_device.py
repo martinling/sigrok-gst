@@ -4,15 +4,16 @@ class Device(Gst.Element):
 
     __gstmetadata__ = ('Device', 'Src', 'sigrok device source', 'Martin Ling')
 
-    src = Gst.Pad.new_from_template(Gst.PadTemplate.new("src",
-                                    Gst.PadDirection.SRC,
-                                    Gst.PadPresence.ALWAYS,
-                                    Gst.Caps.new_any()))
+    src_template = Gst.PadTemplate.new("src",
+                                       Gst.PadDirection.SRC,
+                                       Gst.PadPresence.ALWAYS,
+                                       Gst.Caps.new_any())
 
     driver = GObject.Property(type=str, default='fx2lafw')
 
     def __init__(self):
         Gst.Element.__init__(self)
+        self.src = Gst.Pad.new_from_template(self.src_template)
         self.add_pad(self.src)
         driver = context.drivers[self.driver]
         devices = driver.scan()
