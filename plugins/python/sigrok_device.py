@@ -33,10 +33,10 @@ class Device(Gst.Element):
             print("buffer pushed")
         elif packet.type == PacketType.END:
             self.session.stop()
-            print("sending eos")
+            print("pushing eos")
             eos = Gst.Event.new_eos()
-            self.src.send_event(eos)
-            print("sent eos")
+            self.src.push_event(eos)
+            print("pushed eos")
 
     def start(self):
         self.device.open()
