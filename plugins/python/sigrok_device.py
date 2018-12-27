@@ -29,15 +29,10 @@ class Device(Gst.Element):
     def datafeed_callback(self, device, packet):
         if packet.type == PacketType.LOGIC:
             buf = Gst.Buffer.new_wrapped(bytes(packet.payload.data))
-            print("pushing buffer")
             self.src.push(buf)
-            print("buffer pushed")
         elif packet.type == PacketType.END:
             self.session.stop()
-            print("pushing eos")
-            eos = Gst.Event.new_eos()
-            self.src.push_event(eos)
-            print("pushed eos")
+            self.src.push_event(Gst.Event.new_eos())
 
     def start(self):
         self.device.open()
@@ -54,8 +49,6 @@ class Device(Gst.Element):
         self.session.add_datafeed_callback(self.datafeed_callback)
         self.session.start()
         self.session.run()
-        print("stopping task")
         self.task.stop()
-        print("task stopped")
 
 __gstelementfactory__ = ("sigrok_device", Gst.Rank.NONE, Device)

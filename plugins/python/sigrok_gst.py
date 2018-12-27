@@ -5,4 +5,3 @@ from gi.repository import Gst, GstBase, GLib, GObject
 from sigrok.core import *
 
 context = Context.create()
-context.log_level = LogLevel.SPEW

@@ -16,7 +16,6 @@ class Output(GstBase.BaseSink):
         fmt = context.output_formats[self.format]
         device = context.create_user_device("Vendor", "Model", "Version")
         self.output = fmt.create_output(device)
-        print("output init done")
 
     def do_render(self, buf):
         print("got buffer")
