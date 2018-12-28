@@ -11,13 +11,13 @@ class Output(GstBase.BaseSink):
 
     format = GObject.Property(type=str, default='bits')
 
-    def __init__(self):
-        GstBase.BaseSink.__init__(self)
+    def do_start(self):
         fmt = context.output_formats[self.format]
         device = context.create_user_device("Vendor", "Model", "Version")
         for i in range(8):
             device.add_channel(i, ChannelType.LOGIC, "D%d" % i)
         self.output = fmt.create_output(device)
+        return True
 
     def do_render(self, buf):
         ret, map_info = buf.map(Gst.MapFlags.READ)
