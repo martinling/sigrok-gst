@@ -15,9 +15,6 @@ class Device(Gst.Element):
         Gst.Element.__init__(self)
         self.src = Gst.Pad.new_from_template(self.src_template)
         self.add_pad(self.src)
-        driver = context.drivers[self.driver]
-        devices = driver.scan()
-        self.device = devices[0]
 
     def do_change_state(self, transition):
         if transition == Gst.StateChange.READY_TO_PAUSED:
@@ -35,6 +32,9 @@ class Device(Gst.Element):
             self.src.push_event(Gst.Event.new_eos())
 
     def start(self):
+        driver = context.drivers[self.driver]
+        devices = driver.scan()
+        self.device = devices[0]
         self.device.open()
         self.device.config_set(ConfigKey.LIMIT_SAMPLES, 10)
         self.task = Gst.Task.new(self.run)
